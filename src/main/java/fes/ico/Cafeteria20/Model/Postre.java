@@ -10,10 +10,8 @@ import lombok.*;
 public class Postre extends Producto {
     private String categoria;
     private String Sabor;
-
     public Postre(int codigo, String nombre, int precio, String categoria){
         super(codigo, nombre, precio);
         this.categoria = categoria;
-
     }
 }

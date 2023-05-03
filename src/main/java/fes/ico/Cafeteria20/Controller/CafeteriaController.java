@@ -4,20 +4,51 @@ import fes.ico.Cafeteria20.Model.Cafeteria;
 import fes.ico.Cafeteria20.Model.Producto;
 import fes.ico.Cafeteria20.Model.ProductoDTO;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class CafeteriaController {
     Cafeteria cafeteria1;
-    public CafeteriaController(){
+
+    public CafeteriaController() {
         cafeteria1 = new Cafeteria();
     }
+
+    @GetMapping("/productos")
+    public String mostrarProductos(Model model) {
+        RestTemplate restConsumer = new RestTemplate();
+        String uri = "http://127.0.0.1:8080/menu";
+        ArrayList<ArrayList> menuCom = restConsumer.getForObject(uri, ArrayList.class);
+        model.addAttribute("menuCom", menuCom);
+        return "productos";
+    }
+
+    @GetMapping("/productos/{codigo}")
+    public String mostrarProductoID(@PathVariable String codigo, Model model) {
+        RestTemplate restConsumer = new RestTemplate();
+        String uri = "http://127.0.0.1:8080/menu/" + codigo;
+        Producto prod = restConsumer.getForObject(uri, Producto.class);
+        model.addAttribute("prod", prod);
+        return "producto";
+    }
+
+
+
+
+
+
+
+
+
+
 
     @GetMapping("/menu")
     public ResponseEntity<ArrayList<ArrayList>> getAllMenu(){
@@ -33,7 +64,7 @@ public class CafeteriaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+    
     @PostMapping("/menu/agregar")
     public ResponseEntity<String> agregarProducto(@RequestBody ProductoDTO productoDTO) {
         cafeteria1.agregarProducto(productoDTO.getCodigo(), productoDTO.getNombre(), productoDTO.getPrecio(), productoDTO.getCategoria(), productoDTO.getSabor());
