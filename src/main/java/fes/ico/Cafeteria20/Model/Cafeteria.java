@@ -45,15 +45,15 @@ public class Cafeteria {
     public void agregarProducto(int codigo, String nombre, int precio, String categoria, String sabor) {
         Producto nuevoProducto = null;
         switch (categoria) {
-            case "comida":
+            case "Comida":
                 nuevoProducto = new Comida(codigo, nombre, precio, sabor);
                 alimentos.add((Comida) nuevoProducto);
                 break;
-            case "postre":
+            case "Postre":
                 nuevoProducto = new Postre(codigo, nombre, precio, categoria);
                 postres.add((Postre) nuevoProducto);
                 break;
-            case "bebida":
+            case "Bebida":
                 nuevoProducto = new Bebida(codigo, nombre, precio, sabor);
                 bebidas.add((Bebida) nuevoProducto);
                 break;
@@ -61,7 +61,7 @@ public class Cafeteria {
                 // Manejo de error, la categoría no es válida
                 break;
         }
-        if (nuevoProducto != null) {
+        /*if (nuevoProducto != null) {
             // Agregamos el nuevo producto a la lista correspondiente
             for (ArrayList<Producto> categoriaMenu : menu) {
                 if (categoriaMenu.get(0).getClass().getSimpleName().equals(categoria)) {
@@ -69,11 +69,11 @@ public class Cafeteria {
                     break;
                 }
             }
-        }
+        }*/
     }
 
-    public Producto eliminarProducto(int codigo) {
-        Producto productoAEliminar = buscarProducto(codigo);
+    public Producto eliminarProducto(Producto producto) {
+        Producto productoAEliminar = buscarProducto(producto.codigo);
         if (productoAEliminar != null) {
             if (productoAEliminar instanceof Comida) {
                 alimentos.remove(productoAEliminar);
@@ -105,11 +105,12 @@ public class Cafeteria {
         return null; // Si no se encuentra el producto, se devuelve null
     }
 
-    public void actualizarPrecioProducto(int codigo, int nuevoPrecio) {
+    public Producto actualizarPrecioProducto(int codigo, int nuevoPrecio) {
         Producto productoAActualizar = buscarProducto(codigo);
         if (productoAActualizar != null) {
             productoAActualizar.setPrecio(nuevoPrecio);
         }
+        return productoAActualizar;
     }
 
 
