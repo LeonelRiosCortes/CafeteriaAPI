@@ -22,13 +22,19 @@ public class CafeteriaController {
         cafeteria1 = new Cafeteria();
     }
 
+    @GetMapping("/index")
+    public String mostraIndex(Model model) {
+        return "index";
+    }
+
+
     @GetMapping("/productos")
     public String mostrarProductos(Model model) {
         RestTemplate restConsumer = new RestTemplate();
         String uri = "http://127.0.0.1:8080/menu";
         ArrayList<ArrayList> menuCom = restConsumer.getForObject(uri, ArrayList.class);
         model.addAttribute("menuCom", menuCom);
-        return "productos";
+        return "interface";
     }
 
     @GetMapping("/productos/{codigo}")
